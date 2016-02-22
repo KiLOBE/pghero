@@ -9,9 +9,9 @@
       <span class="tiny"><%= number_with_delimiter((@replication_lag * 1000).round) %> ms</span>
     </div>
   <% end %>
-  <div class="alert alert-<%= @long_running_queries.empty? ? "success" : "warning" %>">
-    <% if @long_running_queries.any? %>
-      <%= pluralize(@long_running_queries.size, "long running query") %>
+  <div class="alert alert-<%= @queries.long_running.empty? ? "success" : "warning" %>">
+    <% if @queries.long_running.any? %>
+      <%= pluralize(@queries.long_running.size, "long running query") %>
     <% else %>
       No long running queries
     <% end %>
@@ -62,11 +62,11 @@
       <% end %>
     </div>
   <% end %>
-  <div class="alert alert-<%= @query_stats_enabled && @slow_queries.empty? ? "success" : "warning" %>">
-    <% if !@query_stats_enabled %>
+  <div class="alert alert-<%= @queries.stats_enabled? && @queries.slow.empty? ? "success" : "warning" %>">
+    <% if !@queries.stats_enabled? %>
       Query stats must be enabled for slow queries
-    <% elsif @slow_queries.any? %>
-      <%= pluralize(@slow_queries.size, "slow query") %>
+    <% elsif @queries.slow.any? %>
+      <%= pluralize(@queries.slow.size, "slow query") %>
     <% else %>
       No slow queries
     <% end %>
@@ -81,12 +81,12 @@
   </div>
 <% end %>
 
-<% if @long_running_queries.any? %>
+<% if @queries.long_running.any? %>
   <div class="content">
     <%= button_to "Kill All", kill_long_running_queries_path, class: "btn btn-danger", style: "float: right;" %>
     <h1>Long Running Queries</h1>
 
-    <%= render partial: "live_queries_table", locals: {queries: @long_running_queries} %>
+    <%= render partial: "live_queries_table", locals: {queries: @queries.long_running } %>
   </div>
 <% end %>
 
@@ -219,7 +219,7 @@ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym
   </div>
 <% end %>
 
-<% if !@query_stats_enabled %>
+<% if !@queries.stats_enabled? %>
   <div class="content">
     <h1>Query Stats</h1>
 
@@ -237,13 +237,13 @@ pg_stat_statements.track = all</pre>
   </div>
 <% end %>
 
-<% if @query_stats_enabled && @slow_queries.any? %>
+<% if @queries.stats_enabled? && @queries.slow.any? %>
   <div class="content">
     <h1>Slow Queries</h1>
 
     <p>Slow queries take <%= PgHero.slow_query_ms %> ms or more on average and have been called at least <%= PgHero.slow_query_calls %> times.</p>
     <p><%= link_to "Explain queries", explain_path %> to see where to add indexes.</p>
 
-    <%= render partial: "queries_table", locals: {queries: @slow_queries} %>
+    <%= render partial: "queries_table", locals: {queries: @queries.slow } %>
   </div>
 <% end %>

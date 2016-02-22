@@ -11,9 +11,9 @@ module PgHero
 
     def index
       @title = "Overview"
-      @query_stats = PgHero.query_stats(historical: true, start_at: 3.hours.ago)
-      @slow_queries = PgHero.slow_queries(query_stats: @query_stats)
-      @long_running_queries = PgHero.long_running_queries
+      #@query_stats = PgHero.query_stats(historical: true, start_at: 3.hours.ago)
+      #@slow_queries = PgHero.slow_queries(query_stats: @query_stats)
+      #@long_running_queries = PgHero.long_running_queries
       @index_hit_rate = PgHero.index_hit_rate
       @table_hit_rate = PgHero.table_hit_rate
       @missing_indexes =
@@ -196,15 +196,15 @@ module PgHero
     end
 
     def set_query_stats_enabled
-      @query_stats_enabled = PgHero.query_stats_enabled?
+      @queries = DashboardQueries.new
       @system_stats_enabled = PgHero.system_stats_enabled?
       @replica = PgHero.replica?
     end
 
     def set_suggested_indexes(min_average_time = 0, min_calls = 0)
-      @suggested_indexes_by_query = PgHero.suggested_indexes_by_query(query_stats: @query_stats.select { |qs| qs["average_time"].to_f >= min_average_time && qs["calls"].to_i >= min_calls })
+      @suggested_indexes_by_query = PgHero.suggested_indexes_by_query(query_stats: @queries.stats.select { |qs| qs["average_time"].to_f >= min_average_time && qs["calls"].to_i >= min_calls })
       @suggested_indexes = PgHero.suggested_indexes(suggested_indexes_by_query: @suggested_indexes_by_query)
-      @query_stats_by_query = @query_stats.index_by { |q| q["query"] }
+      @query_stats_by_query = @queries.stats.index_by { |q| q["query"] }
       @debug = params[:debug] == "true"
     end
   end
