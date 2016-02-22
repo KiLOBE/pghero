@@ -1,0 +1,10 @@
+<div class="alert alert-<%= queries.stats_enabled? && queries.slow.empty? ? "success" : "warning" %>">
+  <% if !queries.stats_enabled? %>
+    Query stats must be enabled for slow queries
+  <% elsif queries.slow.any? %>
+    <%= pluralize(queries.slow.size, "slow query") %>
+  <% else %>
+    No slow queries
+  <% end %>
+</div>
+

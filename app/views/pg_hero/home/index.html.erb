@@ -9,13 +9,7 @@
       <span class="tiny"><%= number_with_delimiter((@replication_lag * 1000).round) %> ms</span>
     </div>
   <% end %>
-  <div class="alert alert-<%= @queries.long_running.empty? ? "success" : "warning" %>">
-    <% if @queries.long_running.any? %>
-      <%= pluralize(@queries.long_running.size, "long running query") %>
-    <% else %>
-      No long running queries
-    <% end %>
-  </div>
+  <%= render partial: "status_long_running_queries", locals: { queries: @queries } %>
   <div class="alert alert-<%= @good_cache_rate ? "success" : "warning" %>">
     <% if @good_cache_rate %>
       Cache hit rate above <%= PgHero.cache_hit_rate_threshold %>%
@@ -38,13 +32,7 @@
       Vacuuming healthy
     <% end %>
   </div>
-  <div class="alert alert-<%= @invalid_indexes.empty? ? "success" : "warning" %>">
-    <% if @invalid_indexes.any? %>
-      <%= pluralize(@invalid_indexes.size, "invalid index", "invalid indexes") %>
-    <% else %>
-      No invalid indexes
-    <% end %>
-  </div>
+  <%= render partial: "status_invalid_indexes", locals: { indexes: @indexes.invalid } %>
   <% if PgHero.suggested_indexes_enabled? %>
     <div class="alert alert-<%= @suggested_indexes.empty? ? "success" : "warning" %>">
       <% if @suggested_indexes.any? %>
@@ -54,23 +42,15 @@
       <% end %>
     </div>
   <% else %>
-    <div class="alert alert-<%= @missing_indexes.empty? ? "success" : "warning" %>">
-      <% if @missing_indexes.any? %>
-        <%= pluralize(@missing_indexes.size, "table appears", "tables appear") %> to be missing indexes
+    <div class="alert alert-<%= @indexes.missing.empty? ? "success" : "warning" %>">
+      <% if @indexes.missing.any? %>
+        <%= pluralize(@indexes.missing.size, "table appears", "tables appear") %> to be missing indexes
       <% else %>
         No missing indexes
       <% end %>
     </div>
   <% end %>
-  <div class="alert alert-<%= @queries.stats_enabled? && @queries.slow.empty? ? "success" : "warning" %>">
-    <% if !@queries.stats_enabled? %>
-      Query stats must be enabled for slow queries
-    <% elsif @queries.slow.any? %>
-      <%= pluralize(@queries.slow.size, "slow query") %>
-    <% else %>
-      No slow queries
-    <% end %>
-  </div>
+  <%= render partial: "status_slow_queries", locals: { queries: @queries } %>
 </div>
 
 <% if @replica && !@good_replication_lag %>
@@ -139,7 +119,7 @@
   </div>
 <% end %>
 
-<% if @invalid_indexes.any? %>
+<% if @indexes.invalid.any? %>
   <div class="content">
     <h1>Invalid Indexes</h1>
 
@@ -152,7 +132,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @invalid_indexes.each do |query| %>
+        <% @indexes.invalid.each do |query| %>
           <tr>
             <td><%= query["index"] %></td>
           </tr>
@@ -192,7 +172,7 @@ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym
   </div>
 <% end %>
 
-<% if @missing_indexes.any? %>
+<% if @indexes.missing.any? %>
   <div class="content">
     <h1>Missing Indexes</h1>
 
@@ -207,7 +187,7 @@ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym
         </tr>
       </thead>
       <tbody>
-        <% @missing_indexes.each do |query| %>
+        <% @indexes.missing.each do |query| %>
           <tr>
             <td><%= query["table"] %></td>
             <td style="width: 30%;"><%= query["percent_of_times_index_used"] %></td>

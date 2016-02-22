@@ -1,0 +1,8 @@
+<div class="alert alert-<%= queries.long_running.empty? ? "success" : "warning" %>">
+  <% if queries.long_running.any? %>
+    <%= pluralize(queries.long_running.size, "long running query") %>
+  <% else %>
+    No long running queries
+  <% end %>
+</div>
+

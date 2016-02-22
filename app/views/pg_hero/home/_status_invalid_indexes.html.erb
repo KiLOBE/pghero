@@ -1,0 +1,8 @@
+<div class="alert alert-<%= indexes.empty? ? "success" : "warning" %>">
+  <% if indexes.any? %>
+    <%= pluralize(indexes.size, "invalid index", "invalid indexes") %>
+  <% else %>
+    No invalid indexes
+  <% end %>
+</div>
+

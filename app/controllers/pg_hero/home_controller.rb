@@ -11,19 +11,10 @@ module PgHero
 
     def index
       @title = "Overview"
-      #@query_stats = PgHero.query_stats(historical: true, start_at: 3.hours.ago)
-      #@slow_queries = PgHero.slow_queries(query_stats: @query_stats)
-      #@long_running_queries = PgHero.long_running_queries
       @index_hit_rate = PgHero.index_hit_rate
       @table_hit_rate = PgHero.table_hit_rate
-      @missing_indexes =
-        if PgHero.suggested_indexes_enabled?
-          []
-        else
-          PgHero.missing_indexes
-        end
-      @unused_indexes = PgHero.unused_indexes.select { |q| q["index_scans"].to_i == 0 }
-      @invalid_indexes = PgHero.invalid_indexes
+      @indexes = DashboardIndexes.new
+      @query_stats = @queries.stats
       @good_cache_rate = @table_hit_rate >= PgHero.cache_hit_rate_threshold.to_f / 100 && @index_hit_rate >= PgHero.cache_hit_rate_threshold.to_f / 100
       @query_stats_available = PgHero.query_stats_available?
       @total_connections = PgHero.total_connections
@@ -59,7 +50,6 @@ module PgHero
       @sort = %w(average_time calls).include?(params[:sort]) ? params[:sort] : nil
       @min_average_time = params[:min_average_time] ? params[:min_average_time].to_i : nil
       @min_calls = params[:min_calls] ? params[:min_calls].to_i : nil
-
       @query_stats =
         begin
           if @historical_query_stats_enabled
@@ -202,9 +192,9 @@ module PgHero
     end
 
     def set_suggested_indexes(min_average_time = 0, min_calls = 0)
-      @suggested_indexes_by_query = PgHero.suggested_indexes_by_query(query_stats: @queries.stats.select { |qs| qs["average_time"].to_f >= min_average_time && qs["calls"].to_i >= min_calls })
+      @suggested_indexes_by_query = PgHero.suggested_indexes_by_query(query_stats: @query_stats.select { |qs| qs["average_time"].to_f >= min_average_time && qs["calls"].to_i >= min_calls })
       @suggested_indexes = PgHero.suggested_indexes(suggested_indexes_by_query: @suggested_indexes_by_query)
-      @query_stats_by_query = @queries.stats.index_by { |q| q["query"] }
+      @query_stats_by_query = @query_stats.index_by { |q| q["query"] }
       @debug = params[:debug] == "true"
     end
   end
