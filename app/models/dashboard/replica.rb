@@ -1,4 +1,4 @@
-class DashboardReplica
+class Dashboard::Replica
   def enabled? 
     @replica ||= PgHero.replica?
   end

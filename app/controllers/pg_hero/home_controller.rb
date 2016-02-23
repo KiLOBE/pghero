@@ -13,7 +13,7 @@ module PgHero
       @title = "Overview"
       @index_hit_rate = PgHero.index_hit_rate
       @table_hit_rate = PgHero.table_hit_rate
-      @indexes = DashboardIndexes.new
+      @indexes = Dashboard::Indexes.new
       @query_stats = @queries.stats
       @good_cache_rate = @table_hit_rate >= PgHero.cache_hit_rate_threshold.to_f / 100 && @index_hit_rate >= PgHero.cache_hit_rate_threshold.to_f / 100
       @total_connections = PgHero.total_connections
@@ -181,9 +181,9 @@ module PgHero
     end
 
     def set_query_stats_enabled
-      @queries = DashboardQueries.new
+      @queries = Dashboard::Queries.new
       @system_stats_enabled = PgHero.system_stats_enabled?
-      @replica = DashboardReplica.new 
+      @replica = Dashboard::Replica.new 
     end
 
     def set_suggested_indexes(min_average_time = 0, min_calls = 0)

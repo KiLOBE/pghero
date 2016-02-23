@@ -1,4 +1,4 @@
-class DashboardQueries
+class Dashboard::Queries
   def stats_enabled?
     @query_stats_enabled ||= PgHero.query_stats_enabled?
   end

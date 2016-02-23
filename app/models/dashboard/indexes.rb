@@ -1,4 +1,4 @@
-class DashboardIndexes
+class Dashboard::Indexes
   def suggested_enabled?
     PgHero.suggested_indexes_enabled?
   end
