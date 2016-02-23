@@ -1,0 +1,18 @@
+<% if indexes.suggested_enabled? %>
+  <div class="alert alert-<%= suggested.empty? ? "success" : "warning" %>">
+    <% if suggested.any? %>
+      <%= pluralize(suggested.size, "suggested index", "suggested indexes") %>
+    <% else %>
+      No suggested indexes
+    <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-<%= indexes.missing.empty? ? "success" : "warning" %>">
+    <% if indexes.missing.any? %>
+      <%= pluralize(indexes.missing.size, "table appears", "tables appear") %> to be missing indexes
+    <% else %>
+      No missing indexes
+    <% end %>
+  </div>
+<% end %>
+

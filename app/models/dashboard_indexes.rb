@@ -1,6 +1,10 @@
 class DashboardIndexes
+  def suggested_enabled?
+    PgHero.suggested_indexes_enabled?
+  end
+
   def missing
-    if PgHero.suggested_indexes_enabled?
+    if suggested_enabled? 
       []
     else
       PgHero.missing_indexes

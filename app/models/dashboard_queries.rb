@@ -3,6 +3,10 @@ class DashboardQueries
     @query_stats_enabled ||= PgHero.query_stats_enabled?
   end
 
+  def stats_available?
+    @query_stats_available ||= PgHero.query_stats_available?
+  end
+
   def long_running
     @long_running_queries ||= PgHero.long_running_queries
   end 

@@ -1,0 +1,11 @@
+<% if replica.enabled? %>
+  <div class="alert alert-<%= replica.good_lag? ? "success" : "warning" %>">
+    <% if replica.good_lag? %>
+      Healthy replication lag
+    <% else %>
+      High replication lag
+    <% end %>
+    <span class="tiny"><%= number_with_delimiter((replica.lag * 1000).round) %> ms</span>
+  </div>
+<% end %>
+

@@ -1,14 +1,5 @@
 <div id="status">
-  <% if @replica %>
-    <div class="alert alert-<%= @good_replication_lag ? "success" : "warning" %>">
-      <% if @good_replication_lag %>
-        Healthy replication lag
-      <% else %>
-        High replication lag
-      <% end %>
-      <span class="tiny"><%= number_with_delimiter((@replication_lag * 1000).round) %> ms</span>
-    </div>
-  <% end %>
+  <%= render partial: "status_replica", locals: { replica: @replica } %>
   <%= render partial: "status_long_running_queries", locals: { queries: @queries } %>
   <div class="alert alert-<%= @good_cache_rate ? "success" : "warning" %>">
     <% if @good_cache_rate %>
@@ -33,33 +24,13 @@
     <% end %>
   </div>
   <%= render partial: "status_invalid_indexes", locals: { indexes: @indexes.invalid } %>
-  <% if PgHero.suggested_indexes_enabled? %>
-    <div class="alert alert-<%= @suggested_indexes.empty? ? "success" : "warning" %>">
-      <% if @suggested_indexes.any? %>
-        <%= pluralize(@suggested_indexes.size, "suggested index", "suggested indexes") %>
-      <% else %>
-        No suggested indexes
-      <% end %>
-    </div>
-  <% else %>
-    <div class="alert alert-<%= @indexes.missing.empty? ? "success" : "warning" %>">
-      <% if @indexes.missing.any? %>
-        <%= pluralize(@indexes.missing.size, "table appears", "tables appear") %> to be missing indexes
-      <% else %>
-        No missing indexes
-      <% end %>
-    </div>
-  <% end %>
+
+  <%= render partial: "indexes", locals: { indexes: @indexes, suggested: @suggested_indexes } %>
+
   <%= render partial: "status_slow_queries", locals: { queries: @queries } %>
 </div>
 
-<% if @replica && !@good_replication_lag %>
-  <div class="content">
-    <h1>High Replication Lag</h1>
-
-    <p><%= pluralize(@replication_lag.round, "second") %></p>
-  </div>
-<% end %>
+<%= render partial: "replica", locals: { replica: @replica } %>
 
 <% if @queries.long_running.any? %>
   <div class="content">
@@ -157,7 +128,7 @@ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym
   <div class="content">
     <h1>Query Stats</h1>
 
-    <% if @query_stats_available %>
+    <% if @queries.stats_available? %>
       <p>
         Query stats are available but not enabled.
         <%= button_to "Enable", enable_query_stats_path, class: "btn btn-info" %>

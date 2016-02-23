@@ -1,0 +1,8 @@
+<% if replica && !replica.good_lag? %>
+  <div class="content">
+    <h1>High Replication Lag</h1>
+
+    <p><%= pluralize(replica.lag.round, "second") %></p>
+  </div>
+<% end %>
+

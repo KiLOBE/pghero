@@ -16,13 +16,8 @@ module PgHero
       @indexes = DashboardIndexes.new
       @query_stats = @queries.stats
       @good_cache_rate = @table_hit_rate >= PgHero.cache_hit_rate_threshold.to_f / 100 && @index_hit_rate >= PgHero.cache_hit_rate_threshold.to_f / 100
-      @query_stats_available = PgHero.query_stats_available?
       @total_connections = PgHero.total_connections
       @good_total_connections = @total_connections < PgHero.total_connections_threshold
-      if @replica
-        @replication_lag = PgHero.replication_lag
-        @good_replication_lag = @replication_lag < 5
-      end
       @transaction_id_danger = PgHero.transaction_id_danger(threshold: 1500000000)
       set_suggested_indexes((params[:min_average_time] || 20).to_f, (params[:min_calls] || 50).to_i)
       @show_migrations = PgHero.show_migrations
@@ -188,7 +183,7 @@ module PgHero
     def set_query_stats_enabled
       @queries = DashboardQueries.new
       @system_stats_enabled = PgHero.system_stats_enabled?
-      @replica = PgHero.replica?
+      @replica = DashboardReplica.new 
     end
 
     def set_suggested_indexes(min_average_time = 0, min_calls = 0)
