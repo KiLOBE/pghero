@@ -124,22 +124,6 @@ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym
 
 <%= render partial: "missing_indexes", locals: { indexes: @indexes } %>
 
-<% if !@queries.stats_enabled? %>
-  <div class="content">
-    <h1>Query Stats</h1>
-
-    <% if @queries.stats_available? %>
-      <p>
-        Query stats are available but not enabled.
-        <%= button_to "Enable", enable_query_stats_path, class: "btn btn-info" %>
-      </p>
-    <% else %>
-      <p>Make them available by adding the following lines to <code>postgresql.conf</code>:</p>
-      <pre>shared_preload_libraries = 'pg_stat_statements'
-pg_stat_statements.track = all</pre>
-      <p>Restart the server for the changes to take effect.</p>
-    <% end %>
-  </div>
-<% end %>
+<%= render partial: "query_stats", locals: { queries: @queries} %>
 
 <%= render partial: "slow_queries", locals: { queries: @queries } %>
