@@ -1,0 +1,10 @@
+<% if queries.stats_enabled? && queries.slow.any? %>
+  <div class="content">
+    <h1>Slow Queries</h1>
+
+    <p>Slow queries take <%= PgHero.slow_query_ms %> ms or more on average and have been called at least <%= PgHero.slow_query_calls %> times.</p>
+    <p><%= link_to "Explain queries", explain_path %> to see where to add indexes.</p>
+
+    <%= render partial: "queries_table", locals: {queries: queries.slow } %>
+  </div>
+<% end %>

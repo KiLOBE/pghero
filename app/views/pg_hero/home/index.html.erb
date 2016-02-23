@@ -119,28 +119,7 @@
   </div>
 <% end %>
 
-<% if @indexes.invalid.any? %>
-  <div class="content">
-    <h1>Invalid Indexes</h1>
-
-    <p>These indexes exist, but can’t be used. You should recreate them.</p>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @indexes.invalid.each do |query| %>
-          <tr>
-            <td><%= query["index"] %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+<%= render partial: "invalid_indexes", locals: { indexes: @indexes } %>
 
 <% if @suggested_indexes.any? %>
   <div class="content">
@@ -172,32 +151,7 @@ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym
   </div>
 <% end %>
 
-<% if @indexes.missing.any? %>
-  <div class="content">
-    <h1>Missing Indexes</h1>
-
-    <p>These tables have a large number of rows but indexes are not used often. Add indexes for faster queries.</p>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Table</th>
-          <th>% of Time Index Used</th>
-          <th>Rows in Table</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @indexes.missing.each do |query| %>
-          <tr>
-            <td><%= query["table"] %></td>
-            <td style="width: 30%;"><%= query["percent_of_times_index_used"] %></td>
-            <td style="width: 20%;"><%= number_with_delimiter(query["rows_in_table"]) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+<%= render partial: "missing_indexes", locals: { indexes: @indexes } %>
 
 <% if !@queries.stats_enabled? %>
   <div class="content">
@@ -217,13 +171,4 @@ pg_stat_statements.track = all</pre>
   </div>
 <% end %>
 
-<% if @queries.stats_enabled? && @queries.slow.any? %>
-  <div class="content">
-    <h1>Slow Queries</h1>
-
-    <p>Slow queries take <%= PgHero.slow_query_ms %> ms or more on average and have been called at least <%= PgHero.slow_query_calls %> times.</p>
-    <p><%= link_to "Explain queries", explain_path %> to see where to add indexes.</p>
-
-    <%= render partial: "queries_table", locals: {queries: @queries.slow } %>
-  </div>
-<% end %>
+<%= render partial: "slow_queries", locals: { queries: @queries } %>
