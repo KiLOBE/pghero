@@ -25,6 +25,13 @@ PgHero::Engine.routes.draw do
     get "query_stats" => redirect("queries")
     get "indexes" => redirect("index_usage")
 
+    # Structures
+    get "structure/tablespaces", to: "structures#tablespaces"
+    get "structure/tables", to: "structures#tables"
+    get "structure/indexes", to: "structures#indexes"
+    get "structure/foreign_tables", to: "structures#foreign_tables"
+    get "structure/schemas", to: "structures#schemas"
+
     root to: "home#index"
   end
 end

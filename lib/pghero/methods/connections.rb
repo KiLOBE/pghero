@@ -12,6 +12,7 @@ module PgHero
               application_name AS source,
               client_addr AS ip,
               datname AS database,
+              usename AS user,
               COUNT(*) AS total_connections
             FROM
               pg_stat_activity
@@ -29,6 +30,7 @@ module PgHero
             SELECT
               application_name AS source,
               client_addr AS ip,
+              usename AS user,
               COUNT(*) AS total_connections
             FROM
               pg_stat_activity

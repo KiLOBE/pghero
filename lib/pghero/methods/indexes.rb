@@ -1,6 +1,7 @@
 module PgHero
   module Methods
     module Indexes
+
       def index_hit_rate
         select_all(<<-SQL
           SELECT
@@ -130,6 +131,8 @@ module PgHero
             pg_class t ON t.oid = i.indrelid
           INNER JOIN
             pg_class ix ON ix.oid = i.indexrelid
+          WHERE
+            t.relname !~ '^(pg_|sql_)'
           ORDER BY
             1, 2
         SQL
