@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%= stylesheet_link_tag "pghero/application" %>
     <title><%= [@databases.size > 1 ? PgHero.current_database.titleize : "PgHero", @title].compact.join(" / ") %></title>
 
     <meta charset="utf-8" />
@@ -443,5 +444,6 @@
         </div>
       </div>
     </div>
+    <%= javascript_include_tag "pghero/application" %>
   </body>
 </html>

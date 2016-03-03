@@ -27,6 +27,15 @@ module PgHero
 
     def indexes 
       @indexes = PgHero.indexes
+      @graph_indexes = {}
+      @indexes.each do |index|
+        @graph_indexes[index["table"]] ||= 0
+        @graph_indexes[index["table"]] += 1  
+      end 
+      @graph_information = []
+      @graph_indexes.each do |k,v|
+        @graph_information << [ k, v]
+      end
     end
 
     private 
