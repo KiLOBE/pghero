@@ -1,0 +1,68 @@
+<aside>
+  <ul id="slide-out-right" class="side-nav">
+    <li class="close-btn"><a class="button-collapse-close" onclick="$('#slide-out-right').sideNav('hide');">Close menu<i class="material-icons mdi-content-clear right"></i></a></li>
+    <li class="divider"></li>
+
+    <div>
+      <ul class="tabs blue-text text-lighten-1">
+        <li class="tab"><a href="#search" class="active blue-text text-lighten-1">Search</a></li>
+        <li class="tab"><a href="#tools" class="blue-text text-lighten-1">Tools</a></li>
+      </ul>
+
+      <div id="search"><!-- tabs search -->              
+        <nav class="grey lighten-3 grey-text text-darken-2">
+          <div class="nav-wrapper">
+            <form>
+              <div class="input-field">
+                <input id="search" type="search" required>
+                <label for="search"><i class="material-icons mdi-action-search grey-text text-darken-2"></i></label>
+                <i class="material-icons mdi-content-clear"></i>
+              </div>
+            </form>
+          </div>
+        </nav> 
+        <form class="filter">  
+          <p>Filter by tag:</p>  
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="1" />
+          <label for="1">ALL</label>
+          </p>
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="2" />
+          <label for="2">PRO</label>
+          </p>
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="3" />
+          <label for="3">PRE</label>
+          </p>
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="4" />
+          <label for="4">UAT</label>
+          </p>
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="5" />
+          <label for="5">INT</label>
+          </p>
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="6" />
+          <label for="6">DEV</label>
+          </p>
+          <p>
+          <input name="group1" type="radio" class="filled-in" id="7" />
+          <label for="7">BI</label>
+          </p>                             
+        </form>
+      </div>
+
+      <div id="tools"><!-- tabs tools -->
+        <ul>
+          <li><a href="#!">Tool 1</a></li>
+          <li><a href="#!">Tool 2</a></li>
+          <li><a href="#!">Tool 3</a></li>
+          <li><a href="#!">Tool 4</a></li>
+          <li><a href="#!">Tool 5</a></li>
+        </ul>
+      </div>
+    </div>                                                        
+  </ul>  
+</aside>
