@@ -1,6 +1,6 @@
 module PgHero
   class HomeController < ActionController::Base
-    layout "pg_hero/application"
+    layout "pg_hero/application_v2"
 
     protect_from_forgery
 
