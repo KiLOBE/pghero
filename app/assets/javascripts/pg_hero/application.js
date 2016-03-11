@@ -1,7 +1,7 @@
 //= require ./jquery-1.12.1.min
 //= require ./d3.min
 //= require ./c3.min
-//= require ./materialize.min
+//= require ./materialize
 //= require ./owl.carousel.min
 
 
