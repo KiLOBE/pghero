@@ -1,0 +1,19 @@
+<% if status.render? %>
+  <div class="item card <%= status.style %> darken-1">
+    <div class="card-content white-text">
+      <span class="card-title"><%= status.title %></span>
+      <p>DB: <%= PgHero.current_database_name %></p>
+      <p><%= status.message %></p>
+      <p>
+      <%- unless status.extra_information.blank? %>
+        <span class="tiny">status.extra_information</span>
+      <% end %>
+      </p>
+    </div>
+    <div class="card-action">
+      <a href="#" class="white-text"><i class="material-icons mdi-action-visibility"></i></a>
+      <a href="#" class="white-text"><i class="material-icons mdi-content-clear"></i></a>
+    </div>
+  </div>
+<% end %>
+

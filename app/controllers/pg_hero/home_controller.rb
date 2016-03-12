@@ -10,6 +10,7 @@ module PgHero
     before_filter :set_query_stats_enabled
 
     def index
+
       @title = "Overview"
       @index_hit_rate = PgHero.index_hit_rate
       @table_hit_rate = PgHero.table_hit_rate
@@ -21,6 +22,10 @@ module PgHero
       @transaction_id_danger = PgHero.transaction_id_danger(threshold: 1500000000)
       set_suggested_indexes((params[:min_average_time] || 20).to_f, (params[:min_calls] || 50).to_i)
       @show_migrations = PgHero.show_migrations
+
+      @status_replica = Status::Replica.new({replica: @replica})
+      @status_long_running_queries = Status::LongRunningQueries.new({queries: @queries})
+      @status_good_cache_rate = Status::CacheRate.new({good_cache_rate: @good_cache_rate})
     end
 
     def index_usage
@@ -166,12 +171,15 @@ module PgHero
     def set_database
       @databases = PgHero.databases.values
       if params[:database]
+        @database = params[:database]
         PgHero.with(params[:database]) do
           yield
         end
       elsif @databases.size > 1
+        @database = PgHero.primary_database
         redirect_to url_for(params.slice(:controller, :action).merge(database: PgHero.primary_database))
       else
+        @database = PgHero.primary_database
         yield
       end
     end

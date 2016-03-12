@@ -1,6 +1,11 @@
 module PgHero
   module Methods
     module Databases
+
+      def current_database_name
+        databases[current_database].config["url"][:database]
+      end
+
       def databases
         @databases ||= begin
           Hash[
