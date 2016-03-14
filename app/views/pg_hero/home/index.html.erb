@@ -1,29 +1,9 @@
-<div id="status">
-  <%= render partial: "status", locals: { status: @status_replica} %>
-  <%= render partial: "status", locals: { status: @status_long_running_queries} %>
-  <%= render partial: "status", locals: { status: @status_good_cache_rate} %>
-
-  <div class="alert alert-<%= @good_total_connections ? "success" : "warning" %>">
-    <% if @good_total_connections %>
-      Healthy number of connections
-    <% else %>
-      High number of connections
-    <% end %>
-    <span class="tiny"><%= @total_connections %></span>
-  </div>
-
-  <div class="alert alert-<%= @transaction_id_danger.empty? ? "success" : "warning" %>">
-    <% if @transaction_id_danger.any? %>
-      <%= pluralize(@transaction_id_danger.size, "table") %> not vacuuming properly
-    <% else %>
-      Vacuuming healthy
+<div class="row">
+  <div class="alerts-box owl-carousel">
+    <% @statuses.each do |status| %>
+      <%= render partial: "status", locals: { status: status} %>
     <% end %>
   </div>
-  <%= render partial: "status_invalid_indexes", locals: { indexes: @indexes.invalid } %>
-
-  <%= render partial: "indexes", locals: { indexes: @indexes, suggested: @suggested_indexes } %>
-
-  <%= render partial: "status_slow_queries", locals: { queries: @queries } %>
 </div>
 
 <%= render partial: "replica", locals: { replica: @replica } %>
@@ -42,14 +22,14 @@
     <h1>Low Cache Hit Rate</h1>
 
     <p>
-      Index Hit Rate: <%= (@index_hit_rate * 100).round(1) %>%
-      <br />
-      Table Hit Rate: <%= (@table_hit_rate * 100).round(1) %>%
+    Index Hit Rate: <%= (@index_hit_rate * 100).round(1) %>%
+    <br />
+    Table Hit Rate: <%= (@table_hit_rate * 100).round(1) %>%
     </p>
 
     <p>
-      The cache hit rate <%= link_to "should be above 99%", "https://devcenter.heroku.com/articles/understanding-postgres-data-caching", target: "_blank" %> in most cases.  You can often increase this by adding more memory.
-      <!-- TODO better suggestions -->
+    The cache hit rate <%= link_to "should be above 99%", "https://devcenter.heroku.com/articles/understanding-postgres-data-caching", target: "_blank" %> in most cases.  You can often increase this by adding more memory.
+    <!-- TODO better suggestions -->
     </p>
   </div>
 <% end %>
@@ -67,22 +47,22 @@
     <p>The database <strong>will shutdown</strong> when there are fewer than 1,000,000 transactions left. <%= link_to "Read more", "http://www.postgresql.org/docs/9.1/static/routine-vacuuming.html#VACUUM-FOR-WRAPAROUND", target: "_blank" %>.</p>
     <p>For each table, run:</p>
     <code><pre>VACUUM FREEZE VERBOSE table</pre></code>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Table</th>
-          <th style="width: 20%;">Transactions Left</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @transaction_id_danger.each do |query| %>
+      <table class="table">
+        <thead>
           <tr>
-            <td><%= query["table"] %></td>
-            <td><%= number_with_delimiter(query["transactions_before_shutdown"]) %></td>
+            <th>Table</th>
+            <th style="width: 20%;">Transactions Left</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @transaction_id_danger.each do |query| %>
+            <tr>
+              <td><%= query["table"] %></td>
+              <td><%= number_with_delimiter(query["transactions_before_shutdown"]) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
   </div>
 <% end %>
 
@@ -92,11 +72,11 @@
   <div class="content">
     <h1>Suggested Indexes</h1>
     <p>
-      Add indexes to speed up queries.
-      <% if @show_migrations %>
+    Add indexes to speed up queries.
+    <% if @show_migrations %>
       Here’s a
       <a href="javascript: void(0);" onclick="document.getElementById('migration3').style.display = 'block';">migration</a> to help.
-      <% end %>
+    <% end %>
     </p>
 
     <div id="migration3" style="display: none;">
@@ -104,17 +84,17 @@
       <p>And paste</p>
       <pre style="overflow: scroll; white-space: pre; word-break: normal;"><% @suggested_indexes.each do |index| %>
 <% if index[:using] == "gist" %>
-connection.execute("CREATE INDEX CONCURRENTLY ON <%= index[:table] %><% if index[:using] %> USING <%= index[:using] %><% end %> (<%= index[:columns].join(", ") %>)")
+ connection.execute("CREATE INDEX CONCURRENTLY ON <%= index[:table] %><% if index[:using] %> USING <%= index[:using] %><% end %> (<%= index[:columns].join(", ") %>)")
 <% else %>
-add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym).map(&:inspect).join(", ") %>], algorithm: :concurrently<% end %><% end %></pre>
-    </div>
+ add_index <%= index[:table].to_sym.inspect %>, [<%= index[:columns].map(&:to_sym).map(&:inspect).join(", ") %>], algorithm: :concurrently<% end %><% end %></pre>
+  </div>
 
-    <% @suggested_indexes.each_with_index do |index, i| %>
-      <hr />
-      <%= render partial: "suggested_index", locals: {index: index, details: index[:details]} %>
-      <p>to speed up</p>
-      <%= render partial: "queries_table", locals: {queries: index[:queries].map { |q| @query_stats_by_query[q] }, suggested_indexes: false} %>
-    <% end %>
+  <% @suggested_indexes.each_with_index do |index, i| %>
+    <hr />
+    <%= render partial: "suggested_index", locals: {index: index, details: index[:details]} %>
+    <p>to speed up</p>
+    <%= render partial: "queries_table", locals: {queries: index[:queries].map { |q| @query_stats_by_query[q] }, suggested_indexes: false} %>
+  <% end %>
   </div>
 <% end %>
 

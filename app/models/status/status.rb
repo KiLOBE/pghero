@@ -1,3 +1,8 @@
+module Status::Helpers
+  extend ActionView::Helpers::TextHelper
+  extend ActionView::Helpers::NumberHelper
+end
+
 class Status::Status
   def initialize(options)
     @options = options

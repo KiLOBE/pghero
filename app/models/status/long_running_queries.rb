@@ -4,7 +4,7 @@ class Status::LongRunningQueries < Status::Status
   end 
 
   def message
-    condition ? "No long running queries" : ActionView::Helpers::TextHelper.pluralize(queries.long_running.size, "long running query") 
+    condition ? "No long running queries" : Status::Helpers.pluralize(queries.long_running.size, "long running query") 
   end
 
   def extra_information 

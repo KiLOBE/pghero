@@ -23,10 +23,8 @@ module PgHero
       set_suggested_indexes((params[:min_average_time] || 20).to_f, (params[:min_calls] || 50).to_i)
       @show_migrations = PgHero.show_migrations
 
-      @status_replica = Status::Replica.new({replica: @replica})
-      @status_long_running_queries = Status::LongRunningQueries.new({queries: @queries})
-      @status_good_cache_rate = Status::CacheRate.new({good_cache_rate: @good_cache_rate})
-    end
+      @statuses = create_statuses
+          end
 
     def index_usage
       @title = "Index Usage"
@@ -199,6 +197,18 @@ module PgHero
       @suggested_indexes = PgHero.suggested_indexes(suggested_indexes_by_query: @suggested_indexes_by_query)
       @query_stats_by_query = @query_stats.index_by { |q| q["query"] }
       @debug = params[:debug] == "true"
+    end
+
+    def create_statuses
+      [Status::Replica.new({ replica: @replica }), 
+       Status::LongRunningQueries.new({ queries: @queries }),
+      Status::CacheRate.new({ good_cache_rate: @good_cache_rate }),
+      Status::Connections.new({ good_total_connections: @good_total_connections, total_connections: @total_connections }),
+      Status::Vacuum.new({ transaction_id_danger: @transaction_id_danger }),
+      Status::InvalidIndexes.new({ indexes: @indexes.invalid }),
+      Status::SuggestedIndexes.new({ indexes: @indexes, suggested: @suggested_indexes}),
+      Status::SlowQueries.new({ queries: @queries })
+      ]
     end
   end
 end

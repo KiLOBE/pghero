@@ -6,7 +6,7 @@
       <p><%= status.message %></p>
       <p>
       <%- unless status.extra_information.blank? %>
-        <span class="tiny">status.extra_information</span>
+        <span class="tiny"><%= status.extra_information %></span>
       <% end %>
       </p>
     </div>

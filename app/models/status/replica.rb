@@ -12,7 +12,7 @@ class Status::Replica < Status::Status
   end
 
   def extra_information 
-    "#{ActionView::Helpers::NumberHelper.number_with_delimiter((replica.lag * 1000).round)} ms"
+    "#{Status::Helpers.number_with_delimiter((replica.lag * 1000).round)} ms"
   end
 
   def title
