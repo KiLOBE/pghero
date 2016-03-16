@@ -1,22 +1,38 @@
 <aside>
-  <a href="#!" data-activates="slide-out-left" class="button-collapse-left hide-on-large-only white-text"><i class="mdi-navigation-menu"></i></a>
+  <a href="#!" data-activates="slide-out-left" class="button-collapse-left hide-on-large-only white-text">
+    <i class="mdi-navigation-menu"></i>
+  </a>
 
   <ul class="left fixed-nav hide-on-med-and-down collection">
-    <li class="grey lighten-2 bold"><a href="http://tools.dev.kilobe.com/pghero2/index.php" class="grey-text text-darken-3">Overview<i class="material-icons mdi-av-equalizer left"></i></a></li>
+    <li class="grey lighten-2 bold">
+      <%= link_to root_path, class: "grey-text text-darken-3" do %>
+        Overview
+        <i class="material-icons mdi-av-equalizer left"></i>
+      <% end %>
+    </li>
     <li>
       <ul class="collapsible">
         <li>
           <div class="collapsible-header grey lighten-2 grey-text text-darken-3">Performance<i class="material-icons mdi-image-tune left"></i><i class="material-icons mdi-navigation-arrow-drop-down right"></i></div>
           <ul class="collapsible-body grey lighten-2">
-            <li class="grey lighten-2"><a href="http://tools.dev.kilobe.com/pghero2/queries-live.php" class="grey-text text-darken-3">Queries (live)</a></li>
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Index Usage</a></li>
+            <li class="grey lighten-2">
+              <%= link_to "Queries (live)", queries_path, class:"grey-text text-darken-3" %>
+            </li>
+            <li class="grey lighten-2">
+              <%= link_to "Index Usage", index_usage_path, class:"grey-text text-darken-3" %>
+            </li>
             <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Buffer Usage</a></li>      
             <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Checkpoint / WAL</a></li>         
           </ul>
         </li>
       </ul>          
     </li>
-    <li class="grey lighten-2 bold"><a href="#!" class="grey-text text-darken-3">Connections<i class="material-icons mdi-communication-call-split left"></i></a></li>
+    <li class="grey lighten-2 bold">
+      <%= link_to connections_path, class: "grey-text text-darken-3" do %>
+        Connections
+        <i class="material-icons mdi-communication-call-split left"></i>
+      <% end %>
+    </li>
     <li>
       <ul class="collapsible">
         <li>
