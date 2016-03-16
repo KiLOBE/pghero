@@ -3,6 +3,7 @@
 //= require ./c3.min
 //= require ./materialize
 //= require ./owl.carousel.min
+//= require ./jquery.tablesorter
 
 
 $(document).ready(function(){
