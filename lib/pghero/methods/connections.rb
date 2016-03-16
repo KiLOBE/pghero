@@ -19,7 +19,7 @@ module PgHero
             WHERE
               pid <> pg_backend_pid()
             GROUP BY
-              1, 2, 3
+              1, 2, 3, 4 
             ORDER BY
               COUNT(*) DESC,
               application_name ASC,
