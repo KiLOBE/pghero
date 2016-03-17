@@ -1,3 +1,76 @@
+<div class="row">     
+  <div id="table-box" class="card white">
+    <table id="myTable" class="bordered highlight tablesorter">
+      <div class="card-header">
+        <h5>Queries</h5>
+        <p>Active Queries List</p>
+        <div class="card-action simple">
+          <a class='dropdown-button grey-text text-darken-3' href='#' data-activates='dropdown-actions-3'><i class="material-icons mdi-navigation-more-vert"></i></a>
+          <ul id='dropdown-actions-3' class='dropdown-content'>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li class="divider"></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Close</a></li>
+          </ul>
+        </div>    </div>
+        <thead>
+          <tr>
+            <th data-field="id">Name</th>
+            <th data-field="column1">Total Time</th>
+            <th data-field="column2">Average Time</th>
+            <th data-field="column3">Calls</th>
+            <th data-field="column4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% queries.each_with_index do |query, index| %>
+            <tr>
+              <td><%= PgHero.current_database_name %></td>
+              <td>
+                <%= number_with_delimiter(query["total_minutes"].to_f.round) %> min
+                <span class="percent">
+                  <% percent = query["total_percent"].to_f %>
+                  <% if percent > 1 %>
+                    <%= percent.round %>%
+                  <% elsif percent > 0.1 %>
+                    <%= percent.round(1) %>%
+                  <% else %>
+                    &lt; 0.1%
+                  <% end %>
+                </span>
+              </td>
+              <td><%= number_with_delimiter(query["average_time"].to_f.round) %> ms</td>
+              <td><%= number_with_delimiter(query["calls"].to_i) %></td>
+              <td><!-- Modal Trigger -->
+                <a class="waves-effect btn-flat modal-trigger" href="#query-action-<%= "#{index}" %>"><i class="material-icons mdi-content-create"></i></a>
+                <!-- Modal Structure -->
+                <div id="query-action-<%= "#{index}" %>" class="modal">
+                  <div class="modal-content">
+                    <h4>Details</h4>
+                    <p><code><%= query["query"] %></code></p>
+                      <% if query["query"] == "<insufficient privilege>" %>
+                        <p class="text-muted">For security reasons, only superusers can see queries executed by other users.</p>
+                      <% end %>
+                      <% if local_assigns[:suggested_indexes] != false && (details = @suggested_indexes_by_query[query["query"]]) %>
+                        <%= render partial: "suggested_index", locals: {index: details[:index], details: details} %>
+                      <% end %>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect btn-flat">Done</a>
+                    <a href="#!" class="modal-action modal-close waves-effect btn-flat">Cancel</a>
+                  </div>
+                </div>
+                <a class="waves-effect btn-flat toasted" onclick="Materialize.toast('Undo<a> back</a>', 4000)"><i class="material-icons mdi-action-delete"></i></a></td>
+            </tr>
+          <% end %>
+        </tbody>
+    </table>  
+  </div>
+</div> 
+
+
+
+
 <table class="table queries-table">
   <% unless local_assigns[:xhr] %>
     <thead>
@@ -13,11 +86,11 @@
       <tr>
         <td colspan="3">
           <p class="queries-info text-muted">
-            <% if local_assigns[:xhr] %>
-              No data available for this time.
-            <% else %>
-              ...
-            <% end %>
+          <% if local_assigns[:xhr] %>
+            No data available for this time.
+          <% else %>
+            ...
+          <% end %>
           </p>
         </td>
       </tr>
@@ -43,12 +116,12 @@
       <tr>
         <td colspan="3" style="border-top: none; padding: 0;">
           <code><pre style="max-height: 230px; overflow: hidden;" onclick="this.style.maxHeight = 'none';"><%= query["query"] %></pre></code>
-          <% if query["query"] == "<insufficient privilege>" %>
-            <p class="text-muted">For security reasons, only superusers can see queries executed by other users.</p>
-          <% end %>
-          <% if local_assigns[:suggested_indexes] != false && (details = @suggested_indexes_by_query[query["query"]]) %>
-            <%= render partial: "suggested_index", locals: {index: details[:index], details: details} %>
-          <% end %>
+            <% if query["query"] == "<insufficient privilege>" %>
+              <p class="text-muted">For security reasons, only superusers can see queries executed by other users.</p>
+            <% end %>
+            <% if local_assigns[:suggested_indexes] != false && (details = @suggested_indexes_by_query[query["query"]]) %>
+              <%= render partial: "suggested_index", locals: {index: details[:index], details: details} %>
+            <% end %>
         </td>
       </tr>
     <% end %>

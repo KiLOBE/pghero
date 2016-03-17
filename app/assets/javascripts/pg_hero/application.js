@@ -43,6 +43,19 @@ $(document).ready(function(){
     responsive: true,
     responsiveRefreshRate : 200,
   });
+
+  $("#myTable").tablesorter({
+    // sort on the first column and third column, order asc 
+    sortList: [[0,0]],
+    headers: { 
+      4: { 
+        // disable it by setting the property sorter to false 
+        sorter: false 
+      } 
+    } 
+  });
+
+  $('.modal-trigger').leanModal();
 });
 
 

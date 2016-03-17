@@ -1,0 +1,16 @@
+/* Table Styles */
+table thead tr .header{
+  background-image: url(asset_path('images/bg.gif'));
+  background-repeat: no-repeat;
+  background-position: center left;
+  cursor: pointer;
+  padding-left: 20px !important;
+}
+table thead tr .headerSortUp {
+  background-image: url(asset_path('images/asc.gif'));
+}
+table thead tr .headerSortDown {
+  background-image: url(asset_path('images/desc.gif'));
+}
+table tbody tr td a.modal-trigger,
+table tbody tr td a.toasted{padding: 0 5px !important;}
