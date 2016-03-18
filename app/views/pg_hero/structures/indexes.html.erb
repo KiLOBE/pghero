@@ -1,21 +1,34 @@
-<div class="content">
-  <div id="chart" data-columns="<%= @graph_information.to_json %>"></div>
-  <h1>Indexes</h1>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Table</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @indexes.each do |index| %>
+<div class="row">     
+  <div id="table-box" class="card white">
+    <table class="bordered highlight tablesorter">
+      <div class="card-header">
+        <h5>Indexes</h5>
+        <div class="card-action simple">
+          <a class='dropdown-button grey-text text-darken-3' href='#' data-activates='dropdown-actions-3'><i class="material-icons mdi-navigation-more-vert"></i></a>
+          <ul id='dropdown-actions-3' class='dropdown-content'>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li class="divider"></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Close</a></li>
+          </ul>
+        </div>   
+      </div>
+      <thead>
         <tr>
-          <td><%= index["table"]%></td>
-          <td><%= index["name"]%></td>
+          <th data-field="id">Table</th>
+          <th data-field="name">Name</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <% @indexes.each do |index| %>
+          <tr>
+            <td><%= index["table"]%></td>
+            <td><%= index["name"]%></td>
+          </tr>
+        <% end %>
+
+      </tbody>
+    </table>  
+  </div>
+</div> 
+

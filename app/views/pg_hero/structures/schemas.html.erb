@@ -1,18 +1,30 @@
-<div class="content">
-  <h1>Schemas</h1>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @schemas.each do |schema| %>
+<div class="row">     
+  <div id="table-box" class="card white">
+    <table class="bordered highlight tablesorter">
+      <div class="card-header">
+        <h5>Schemas</h5>
+        <div class="card-action simple">
+          <a class='dropdown-button grey-text text-darken-3' href='#' data-activates='dropdown-actions-3'><i class="material-icons mdi-navigation-more-vert"></i></a>
+          <ul id='dropdown-actions-3' class='dropdown-content'>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li class="divider"></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Close</a></li>
+          </ul>
+        </div>   
+      </div>
+      <thead>
         <tr>
-          <td><%= schema["name"]%></td>
+          <th data-field="id">Name</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <% @schemas.each do |schema| %>
+          <tr>
+            <td><%= schema["name"]%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>  
+  </div>
+</div> 

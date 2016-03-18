@@ -1,5 +1,21 @@
-<div class="content">
-  <h1>Connections</h1>
+<div class="row">     
+  <div id="table-box" class="card white">
+    <table class="bordered highlight tablesorter">
+      <div class="card-header">
+        <h5>Connections</h5>
+        <p><%= pluralize(@total_connections, "connection") %></p>
+        <div class="card-action simple">
+          <a class='dropdown-button grey-text text-darken-3' href='#' data-activates='dropdown-actions-3'><i class="material-icons mdi-navigation-more-vert"></i></a>
+          <ul id='dropdown-actions-3' class='dropdown-content'>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li class="divider"></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Close</a></li>
+          </ul>
+        </div>   
+      </div>
+      <%= render partial: "connections_table", locals: { connection_sources: PgHero.connection_sources(by_database: true), show_message: false} %>
+    </table>  
+  </div>
+</div> 
 
-  <%= render partial: "connections_table", locals: {total_connections: @total_connections, connection_sources: PgHero.connection_sources(by_database: true), show_message: false} %>
-</div>

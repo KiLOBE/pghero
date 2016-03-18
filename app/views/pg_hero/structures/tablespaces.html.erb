@@ -1,18 +1,31 @@
-<div class="content">
-  <h1>Tablespaces</h1>
+<div class="row">     
+  <div id="table-box" class="card white">
+    <table class="bordered highlight tablesorter">
+      <div class="card-header">
+        <h5>Tablespaces</h5>
+        <div class="card-action simple">
+          <a class='dropdown-button grey-text text-darken-3' href='#' data-activates='dropdown-actions-3'><i class="material-icons mdi-navigation-more-vert"></i></a>
+          <ul id='dropdown-actions-3' class='dropdown-content'>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Option 1</a></li>
+            <li class="divider"></li>
+            <li ><a href="#!" class='grey-text text-darken-3'>Close</a></li>
+          </ul>
+        </div>   
+      </div>
+        <thead>
+          <tr>
+            <th data-field="id">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tablespaces.each do |tablespace| %>
+            <tr>
+              <td><%= tablespace["name"]%></td>
+            </tr>
+          <% end %>
+        </tbody>
+    </table>  
+  </div>
+</div> 
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @tablespaces.each do |tablespace| %>
-        <tr>
-          <td><%= tablespace["name"]%></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
