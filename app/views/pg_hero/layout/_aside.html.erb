@@ -15,17 +15,19 @@
         <li>
           <div class="collapsible-header grey lighten-2 grey-text text-darken-3">Performance<i class="material-icons mdi-image-tune left"></i><i class="material-icons mdi-navigation-arrow-drop-down right"></i></div>
           <ul class="collapsible-body grey lighten-2">
+            <% if @queries.stats_enabled? %>
             <li class="grey lighten-2">
               <%= link_to "Queries", queries_path, class:"grey-text text-darken-3" %>
             </li>
-            <li class="grey lighten-2">
-              <%= link_to "Queries (live)", live_queries_path, class:"grey-text text-darken-3" %>
-            </li>
-            <li class="grey lighten-2">
-              <%= link_to "Index Usage", index_usage_path, class:"grey-text text-darken-3" %>
-            </li>
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Buffer Usage</a></li>      
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Checkpoint / WAL</a></li>         
+          <% end %>
+          <li class="grey lighten-2">
+            <%= link_to "Queries (live)", live_queries_path, class:"grey-text text-darken-3" %>
+          </li>
+          <li class="grey lighten-2">
+            <%= link_to "Index Usage", index_usage_path, class:"grey-text text-darken-3" %>
+          </li>
+          <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Buffer Usage</a></li>      
+          <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Checkpoint / WAL</a></li>         
           </ul>
         </li>
       </ul>          
@@ -41,9 +43,15 @@
         <li>
           <div class="collapsible-header grey lighten-2 grey-text text-darken-3">Status<i class="material-icons mdi-maps-traffic left"></i><i class="material-icons mdi-navigation-arrow-drop-down right"></i></div>
           <ul class="collapsible-body grey lighten-2">
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">System</a></li>
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Disk Usage</a></li>
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">DB Space Usage</a></li>            
+            <li class="grey lighten-2">
+              <a href="#!" class="grey-text text-darken-3">System</a>
+            </li>
+            <li class="grey lighten-2">
+              <a href="#!" class="grey-text text-darken-3">Disk Usage</a>
+            </li>
+            <li class="grey lighten-2">
+              <a href="#!" class="grey-text text-darken-3">DB Space Usage</a>
+            </li>            
           </ul>
         </li>
       </ul>          
@@ -53,10 +61,17 @@
         <li>
           <div class="collapsible-header grey lighten-2 grey-text text-darken-3">Structure<i class="material-icons mdi-maps-layers left"></i><i class="material-icons mdi-navigation-arrow-drop-down right"></i></div>
           <ul class="collapsible-body grey lighten-2">
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Schemas</a></li>
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Tables</a></li>
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">Indexes</a></li>   
-            <li class="grey lighten-2"><a href="#!" class="grey-text text-darken-3">TableSpaces</a></li>          
+            <li class="grey lighten-2">
+              <%= link_to "Schemas", structure_schemas_path, class: "grey-text text-darken-3" %>  
+            <li class="grey lighten-2">
+              <%= link_to "Tables", structure_tables_path, class: "grey-text text-darken-3" %>  
+            </li>
+            <li class="grey lighten-2">
+              <%= link_to "Indexes", structure_indexes_path, class: "grey-text text-darken-3" %>  
+            </li>   
+            <li class="grey lighten-2">
+              <%= link_to "TableSpaces", structure_tablespaces_path, class: "grey-text text-darken-3" %>  
+            </li>          
           </ul>
         </li>
       </ul>          
@@ -71,21 +86,41 @@
         </li>
       </ul>          
     </li>
-    <li class="grey lighten-2 bold"><a href="#!" class="grey-text text-darken-3">Explain<i class="material-icons mdi-action-explore left"></i></a></li>
+    <li class="grey lighten-2 bold">
+      <%= link_to explain_path, class: "grey-text text-darken-3" do %>
+        Explain
+        <i class="material-icons mdi-action-explore left"></i>
+      <% end %>
+    </li>
   </ul>
 
 
   <ul id="slide-out-left" class="side-nav collection">
-    <li class="no-padding bold"><a href="http://tools.dev.kilobe.com/pghero2/index.php">Overview<i class="material-icons mdi-av-equalizer left"></i></a></li>
+    <li class="no-padding bold">
+      <%= link_to root_path, class: "grey-text text-darken-3" do %>
+        Overview
+        <i class="material-icons mdi-av-equalizer left"></i>
+      <% end %>
+    </li>
     <li class="no-padding">
       <ul class="collapsible">
         <li>
           <div class="collapsible-header">Performance<i class="material-icons mdi-image-tune left"></i><i class="material-icons mdi-navigation-arrow-drop-down right"></i></div>
           <ul class="collapsible-body">
-            <li><a href="http://tools.dev.kilobe.com/pghero2/queries-live.php" class="grey-text text-darken-3">Queries (live)</a></li>
-            <li><a href="#!">Index Usage</a></li>
-            <li><a href="#!">Buffer Usage</a></li>      
-            <li><a href="#!">Checkpoint / WAL</a></li>         
+            <% if @queries.stats_enabled? %>
+              <li>
+                <%= link_to "Queries (live)", live_queries_path, class:"grey-text text-darken-3" %>
+              </li>
+            <% end %>
+            <li>
+              <%= link_to "Index Usage", index_usage_path, class:"grey-text text-darken-3" %>
+            </li>
+            <li>
+              <a href="#!">Buffer Usage</a>
+            </li>      
+            <li>
+              <a href="#!">Checkpoint / WAL</a>
+            </li>         
           </ul>
         </li>
       </ul>          
@@ -96,9 +131,15 @@
         <li>
           <div class="collapsible-header">Status<i class="material-icons mdi-maps-traffic left"></i><i class="material-icons mdi-navigation-arrow-drop-down right"></i></div>
           <ul class="collapsible-body">
-            <li><a href="#!">System</a></li>
-            <li><a href="#!">Disk Usage</a></li>
-            <li><a href="#!">DB Space Usage</a></li>            
+            <li>
+              <a href="#!">System</a>
+            </li>
+            <li>
+              <a href="#!">Disk Usage</a>
+            </li>
+            <li>
+              <a href="#!">DB Space Usage</a>
+            </li>            
           </ul>
         </li>
       </ul>          
@@ -126,7 +167,11 @@
         </li>
       </ul>          
     </li>
-    <li class="no-padding bold"><a href="#!">Explain<i class="material-icons mdi-action-explore left"></i></a></li>
+    <li class="no-padding bold">
+      <%= link_to explain_path do %>
+        Explain
+        <i class="material-icons mdi-action-explore left"></i>
+      <% end %>
+    </li>
   </ul>     
-
 </aside>

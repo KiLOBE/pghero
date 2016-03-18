@@ -26,11 +26,11 @@ PgHero::Engine.routes.draw do
     get "indexes" => redirect("index_usage")
 
     # Structures
-    get "structure/tablespaces", to: "structures#tablespaces"
-    get "structure/tables", to: "structures#tables"
-    get "structure/indexes", to: "structures#indexes"
-    get "structure/foreign_tables", to: "structures#foreign_tables"
-    get "structure/schemas", to: "structures#schemas"
+    get "structure/tablespaces", to: "structures#tablespaces", as: "structure_tablespaces"
+    get "structure/tables", to: "structures#tables", as: "structure_tables"
+    get "structure/indexes", to: "structures#indexes", as: "structure_indexes"
+    get "structure/foreign_tables", to: "structures#foreign_tables", as: "structure_foreign_tables"
+    get "structure/schemas", to: "structures#schemas", as: "structure_schemas"
 
     root to: "home#index"
   end
